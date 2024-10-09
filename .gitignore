@@ -1,5 +1,8 @@
 dataset/*
+!dataset
 experiments/*
+!experiments
 results/*
+!results
 *.zip
 __pycache__
