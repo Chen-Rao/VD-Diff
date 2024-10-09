@@ -1,0 +1,95 @@
+﻿name: GOPRO_S2_test
+model_type: S2_Model
+scale: 1
+num_gpu: 1 
+manual_seed: 0
+
+datasets:
+  train:
+    name: GOPRO
+    type: GOPRORecurrentDataset
+    dataroot_gt: dataset/GoPro/train/sharp
+    dataroot_lq: dataset/GoPro/train/blur
+    meta_info_file_train: basicsr/data/meta_info/meta_info_GOPRO_GT.txt
+    test_mode: False
+    io_backend:
+      type: disk
+
+    num_frame: 15
+    gt_size: 256
+    interval_list: [1]
+    random_reverse: false
+    use_flip: true
+    use_rot: true
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 1
+    dataset_enlarge_ratio: 200
+    prefetch_mode: ~
+    phase: train
+    scale: 1
+
+  val:
+    name: GOPRO
+    type: VideoRecurrentSplitClipsTestDataset
+    dataroot_gt: dataset/GoPro_part/test/sharp
+    dataroot_lq: dataset/GoPro_part/test/blur
+
+    cache_data: false
+    io_backend:
+      type: disk
+
+    num_frame: 30
+    num_overlap: 0
+    phase: val
+    scale: 1
+
+network_g:
+  type: S2_arch
+  num_feat: 64 # 64
+  propagation_blocks: 30
+  num_blocks: [7,2]
+  heads: [4,8]
+  use_cross_attention: false
+  cross_attention_heads: 2
+  bias: false
+  n_denoise_res: 1
+  linear_start: 0.1
+  linear_end: 0.99
+  timesteps: 4
+
+
+path:
+  pretrain_network_g: ~
+  strict_load_g: True
+  resume_state: ~
+
+
+val:
+  val_freq: 5000
+  save_img: True
+  use_patch: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+
+logger:
+  print_freq: 1000
+  save_checkpoint_freq: 5000
+  use_tb_logger: false
+  wandb:
+    project: ~
+    resume_id: ~
+
+dist_params:
+  backend: nccl
+  port: 29500
+
+find_unused_parameters: true
