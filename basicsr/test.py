@@ -191,5 +191,4 @@ def train_pipeline(root_path):
 if __name__ == '__main__':
     # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
     root_path = osp.abspath(osp.join(__file__, osp.pardir, osp.pardir))
-    torch.cuda.set_device(0)
     train_pipeline(root_path)

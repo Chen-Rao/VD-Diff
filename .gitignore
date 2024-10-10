@@ -1,5 +1,8 @@
-dataset/GoPro/
-dataset/GoPro_part/
-
+dataset/*
+!dataset
+experiments/*
+!experiments
+results/*
+!results
 *.zip
 __pycache__

@@ -1,5 +1,5 @@
-﻿name: GOPRO_S2
-model_type: S2_Model
+﻿name: GOPRO_S3_test
+model_type: S3_Model
 scale: 1
 num_gpu: 1
 manual_seed: 0
@@ -44,7 +44,7 @@ datasets:
     scale: 1
 
 network_g:
-  type: S2_arch
+  type: S3_arch
   num_feat: 64
   propagation_blocks: 30
   num_blocks: [7,2]
@@ -59,7 +59,7 @@ network_g:
 
 path:
   pretrain_network_g: ~
-  pretrain_network_S1: experiments/GOPRO_S1_final/models/net_g_300000.pth
+  pretrain_network_S2: ~
   strict_load_g: True
   resume_state: ~
 
@@ -76,7 +76,7 @@ train:
     milestones: [300000]
     gamma: 0.5
 
-  total_iter: 200000
+  total_iter: 100000
   warmup_iter: -1
   pixel_opt:
     type: CharbonnierLoss

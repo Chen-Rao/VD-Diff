@@ -59,7 +59,7 @@ network_g:
 
 path:
   pretrain_network_g: ~
-  pretrain_network_S2: experiments/GOPRO_S1_final/models/net_g_300000.pth
+  pretrain_network_S2: experiments/GOPRO_S2/models/net_g_220000.pth
   strict_load_g: True
   resume_state: ~
 

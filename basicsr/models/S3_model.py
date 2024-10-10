@@ -62,10 +62,10 @@ class S3_Model(VideoBaseModel):
 
 
         # fft loss
-        if self.cri_fft:
-            l_fft = self.cri_fft(self.output.view(-1, c, h, w), self.gt.view(-1, c, h, w))
-            l_total += l_fft
-            loss_dict['l_fft'] = l_fft
+        # if self.cri_fft:
+        #     l_fft = self.cri_fft(self.output.view(-1, c, h, w), self.gt.view(-1, c, h, w))
+        #     l_total += l_fft
+        #     loss_dict['l_fft'] = l_fft
             
         l_total.backward()
         self.optimizer_g.step()
