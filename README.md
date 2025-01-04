@@ -16,10 +16,17 @@ as the form below: <br>
     *  GoPro
         *   test
             *   blur
-            *   sharp
+                *   GOPR0384_11_00
+                *   GOPR0384_11_05
+                *   ......
+                *   GOPR0385_11_01
+            *   sharp <br/>
+                *   ......
         *   train
-            *   blur
-            *   sharp
+            *   blur <br/>
+                *   ......
+            *   sharp <br/>
+                *   ......
 
 # Train
 ## Training Stage One
@@ -45,6 +52,3 @@ First, modify the "pretrain_network_g" entry in "options/test/test_GoPro_S3.yml"
 python basicsr/test.py -opt options/test/test_GoPro_S3.yml
 ```
 You can also test your S1 and S2 model by changing the ".yml" option file path accordingly.
-
-# Pretrained Models
-Pretrained models will be available in a few days.

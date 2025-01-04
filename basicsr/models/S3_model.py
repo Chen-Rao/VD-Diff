@@ -39,14 +39,16 @@ class S3_Model(VideoBaseModel):
             self.start_frame = data['start_frame']
     def setup_optimizers(self):
         train_opt = self.opt['train']
-        optim_params = self.net_g.parameters()
-        
+        optim_params = []
+        for name,param in self.net_g.named_parameters():
+            if "WADT" in name or "DM" in name:
+                optim_params.append(param)
         optim_type = train_opt['optim_g'].pop('type')
         self.optimizer_g = self.get_optimizer(optim_type, optim_params, **train_opt['optim_g'])
         self.optimizers.append(self.optimizer_g)
 
     def optimize_parameters(self, current_iter):
-        self.output, IPR_S1, IPR_list = self.net_g(self.lq, self.gt)
+        self.output, IPR_S2, IPR_DM = self.net_g(self.lq, self.gt)
         if len(self.output.size()) == 4:
             b, c, h, w = self.output.size()
         else:
@@ -59,8 +61,13 @@ class S3_Model(VideoBaseModel):
             l_pix = self.cri_pix(self.output, self.gt)
             l_total += l_pix
             loss_dict['l_pix'] = l_pix
-
-
+            
+        # pixel loss
+        # if self.cri_pix:
+        #     l_diff = self.cri_pix(IPR_DM, IPR_S2)
+        #     l_total += l_diff
+        #     loss_dict['l_diff'] = l_diff
+        
         # fft loss
         # if self.cri_fft:
         #     l_fft = self.cri_fft(self.output.view(-1, c, h, w), self.gt.view(-1, c, h, w))

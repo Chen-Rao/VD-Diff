@@ -7,7 +7,7 @@ manual_seed: 0
 datasets:
   train:
     name: GOPRO
-    type: GOPRORecurrentDataset
+    type: GOPRODataset
     dataroot_gt: dataset/GoPro/train/sharp
     dataroot_lq: dataset/GoPro/train/blur
     meta_info_file_train: basicsr/data/meta_info/meta_info_GOPRO_GT.txt
@@ -34,8 +34,8 @@ datasets:
   val:
     name: GOPRO
     type: VideoRecurrentSplitClipsTestDataset
-    dataroot_gt: dataset/GoPro_part/test/sharp
-    dataroot_lq: dataset/GoPro_part/test/blur
+    dataroot_gt: dataset/GoPro/test/sharp
+    dataroot_lq: dataset/GoPro/test/blur
 
     cache_data: false
     io_backend:
@@ -62,10 +62,33 @@ network_g:
 
 
 path:
-  pretrain_network_g: ~
+  pretrain_network_g: experiments/GOPRO_S2/models/net_g_270000.pth
   strict_load_g: True
   resume_state: ~
 
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 8e-5
+    weight_decay: !!float 4e-5
+    betas: [0.9, 0.999]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [300000]
+    gamma: 0.5
+
+  total_iter: 100000
+  warmup_iter: -1
+  pixel_opt:
+    type: CharbonnierLoss
+    loss_weight: 1.0
+    reduction: mean
+  
+  fft_opt:
+    type: FFT
+    loss_weight: 0.1
+    reduction: mean
 
 val:
   val_freq: 5000
@@ -91,5 +114,3 @@ logger:
 dist_params:
   backend: nccl
   port: 29500
-
-find_unused_parameters: true
