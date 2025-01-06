@@ -28,6 +28,12 @@ as the form below: <br>
             *   sharp <br/>
                 *   ......
 
+Then, use the command below to process the GoPro dataset.<br/>
+"--dir" is your GoPro dataset path such as "dataset/GoPro", "--save_dir" is the path to save the processed GoPro dataset such as "dataset/GoPro_new"
+```
+python scripts/refine.py --dir [Your GoPro dataset path] --save_dir [path to save] --deep 3
+```
+
 # Train
 ## Training Stage One
 To train your own S1 model on the GoPro dataset, simply use the following command:
